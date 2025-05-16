@@ -4,7 +4,7 @@ const Database = require("better-sqlite3");
 const AWS = require("aws-sdk");
 
 const app = express();
-const PORT = 4000;
+const PORT = 3000;
 
 const db = new Database("ventasnacionales.db");
 const sqs = new AWS.SQS({ region: process.env.AWS_REGION });
@@ -60,6 +60,11 @@ async function pollSQS() {
   }
   
   pollSQS();
+
+  app.get("/", (req, res) => {
+    res.status(200).json({ mensaje: "Bienvenido a la API de las ventas nacionales" });
+  });
+  
 
 app.get("/ventas", (req, res) => {
   const ventas = db.prepare("SELECT * FROM ventas_nacionales").all();
